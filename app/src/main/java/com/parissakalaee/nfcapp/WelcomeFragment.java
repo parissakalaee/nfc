@@ -1,4 +1,4 @@
-package com.example.nfcapp;
+package com.parissakalaee.nfcapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,30 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.nfcapp.databinding.FragmentFirstBinding;
+import com.parissakalaee.nfcapp.databinding.FragmentWelcomeBinding;
 
-public class FirstFragment extends Fragment {
+public class WelcomeFragment extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private FragmentWelcomeBinding binding;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+            Bundle savedInstanceState) {
+        binding = FragmentWelcomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.buttonFirst.setOnClickListener(view1 -> {
-            Intent qrCodeIntent = new Intent(getActivity(), MyNfcActivity.class);
-            startActivity(qrCodeIntent);
-//                NavHostFragment.findNavController(FirstFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+            Intent nfcReaderIntent = new Intent(getActivity(), NfcReaderActivity.class);
+            startActivity(nfcReaderIntent);
         });
     }
 
@@ -40,5 +35,4 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

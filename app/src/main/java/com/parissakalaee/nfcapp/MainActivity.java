@@ -1,4 +1,4 @@
-package com.example.nfcapp;
+package com.parissakalaee.nfcapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.nfcapp.databinding.ActivityMainBinding;
+import com.parissakalaee.nfcapp.databinding.ActivityMainBinding;
+import com.parissakalaee.nfcapp.service.NfcCardService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MyHostApduService.class);
+                Intent intent = new Intent(MainActivity.this, NfcCardService.class);
                 startService(intent);
             }
         });

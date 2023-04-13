@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MyNfcActivity"
+        <activity android:name=".NfcReaderActivity"
+            android:label="@string/nfc_reader"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
@@ -35,8 +36,7 @@
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
 
-
-        <service android:name=".MyHostApduService"
+        <service android:name=".service.NfcCardService"
             android:exported="true"
             android:permission="android.permission.BIND_NFC_SERVICE">
             <intent-filter>

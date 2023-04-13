@@ -1,4 +1,4 @@
-package com.example.nfcapp;
+package com.parissakalaee.nfcapp;
 
 import org.junit.Test;
 

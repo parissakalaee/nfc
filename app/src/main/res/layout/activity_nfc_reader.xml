@@ -8,6 +8,5 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scan NFC tag"/>
-
+        android:text="@string/scan_nfc_tag"/>
 </LinearLayout>
