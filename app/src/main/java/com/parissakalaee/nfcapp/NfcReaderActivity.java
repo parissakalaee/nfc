@@ -5,6 +5,8 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ public class NfcReaderActivity extends AppCompatActivity implements NfcAdapter.R
     private static final String TAG = NfcReaderActivity.class.getSimpleName();
 
     private NfcAdapter nfcAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,8 @@ public class NfcReaderActivity extends AppCompatActivity implements NfcAdapter.R
         nfcAdapter.disableReaderMode(this);
     }
 
+    final boolean isVersion = true;
+
     @Override
     public void onTagDiscovered(Tag tag) {
         byte[] tagId = tag.getId();
@@ -52,9 +57,12 @@ public class NfcReaderActivity extends AppCompatActivity implements NfcAdapter.R
             if (tech.equals(MifareClassic.class.getName())) {
                 readFromMifareClassicTag(tag);
                 break;
-            }else if(tech.equals(IsoDep.class.getName())) {
-//                readVersion(tag);
-                readMessage(tag);
+            } else if (tech.equals(IsoDep.class.getName())) {
+                if (isVersion) {
+                    readVersion(tag);
+                } else {
+                    readMessage(tag);
+                }
                 break;
             }
         }
@@ -91,7 +99,7 @@ public class NfcReaderActivity extends AppCompatActivity implements NfcAdapter.R
             if (Arrays.equals(response, Constants.OKAY)) {
                 byte[] messageResponse = isoDep.transceive(command);
                 String messageResponseHex = NfcUtils.bytesToHexString(messageResponse);
-                Log.d(TAG, "Response 2 from tag: " + messageResponseHex);
+                handleMessageResponse(messageResponseHex);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,6 +118,16 @@ public class NfcReaderActivity extends AppCompatActivity implements NfcAdapter.R
 
     public void readMessage(Tag tag) {
         readFromTag(tag, Constants.READ_MESSAGE_COMMAND);
+    }
+
+    void handleMessageResponse(String message) {
+        int okayIndex = message.lastIndexOf(NfcUtils.bytesToHexString(Constants.OKAY));
+        if (okayIndex >= 0)
+            message = message.substring(0, okayIndex);
+        Log.d(TAG, "Response 2 from tag: " + message);
+        String finalMessageResponseHex = message;
+        new Handler(Looper.getMainLooper()).post(
+                () -> Toast.makeText(getApplicationContext(), "Version from tag: " + finalMessageResponseHex, Toast.LENGTH_LONG).show());
     }
 
     public void readFromMifareClassicTag(Tag tag) {
